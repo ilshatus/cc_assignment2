@@ -47,7 +47,7 @@ public class Main {
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(input);
             Token token;
             while ((token = lexicalAnalyzer.getNextToken()) != null) {
-
+                System.out.println(token.toString());
             }
         } catch (IOException e) {
             System.out.println("Can't read file");
