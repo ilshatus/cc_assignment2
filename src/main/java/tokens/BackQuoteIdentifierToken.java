@@ -22,7 +22,7 @@ public class BackQuoteIdentifierToken extends Token {
 
         public Builder() {
             super();
-            super.p = Pattern.compile(regexp);
+            super.p = Pattern.compile(regexp, Pattern.MULTILINE);
         }
 
         @Override
