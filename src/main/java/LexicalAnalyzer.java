@@ -9,7 +9,7 @@ public class LexicalAnalyzer {
     private int top = 0;
 
     private void addBuilders() {
-        builders = new Builder[10];
+        builders = new Builder[11];
         builders[0] = new CharacterLiteralToken.Builder();
         builders[1] = new LogicalLiteralToken.Builder();
         builders[2] = new MultilineStringLiteralToken.Builder();
@@ -20,6 +20,7 @@ public class LexicalAnalyzer {
         builders[7] = new DelimiterToken.Builder();
         builders[8] = new KeywordToken.Builder();
         builders[9] = new PlainIdentifierToken.Builder();
+        builders[10] = new ParenthesesToken.Builder();
     }
 
     private void preprocess(){
@@ -79,6 +80,7 @@ public class LexicalAnalyzer {
         while(top < inputCode.length()){
             char c = inputCode.charAt(top);
             if(c==' ' || c =='\n'){
+                System.out.println("skip " + c);
                 top++;
             } else{
                 break;
@@ -86,15 +88,19 @@ public class LexicalAnalyzer {
         }
         Builder last = null;
         int pos = top;
+        System.out.println("start decode " + top);
         for(int i=top;i<inputCode.length();++i){
             char ch = inputCode.charAt(i);
+            System.out.println("next char [" + ch+"]");
             int total = 0;
             for(int j=0;j<builders.length;++j){
                 if(builders[j] == null)
                     continue;
                 total++;
                 State x = builders[j].addNextChar(ch);
+                System.out.println(ch + " buil "+j+" got " + x);
                 if(x == State.MATCH){
+                    System.out.println("full match " + j + " on "+i);
                     pos = i;
                     last = builders[j];
                 } else if(x == State.NOT_MATCH){
@@ -107,6 +113,9 @@ public class LexicalAnalyzer {
 
         }
 
+        if(last == null)
+         System.out.println("last null");
+
         if(last == null && top<inputCode.length()){
             System.out.println("couldnt identify");
         }
@@ -114,6 +123,7 @@ public class LexicalAnalyzer {
 
         if(last == null)
             return null;
+        System.out.println("HERE ");
         return last.build();
     }
 

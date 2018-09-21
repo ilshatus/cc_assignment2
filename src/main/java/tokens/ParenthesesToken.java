@@ -29,6 +29,7 @@ public class ParenthesesToken extends Token {
 
         @Override
         public ParenthesesToken build() {
+            System.out.println("par "+ state);
             if (state.equals(State.MATCH)) {
                 return new ParenthesesToken(lexeme.toString());
             }
