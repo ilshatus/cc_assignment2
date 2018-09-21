@@ -1,32 +1,53 @@
 package tokens;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import tokens.builders.SimpleRegexBuilder;
+import tokens.enums.State;
+
+import java.util.regex.Pattern;
 
 public class DelimiterToken extends Token {
-    private static final String[] delimiters = { ".", ";", ",", "\n"};
-    private static final HashSet<String> delimitersHashSet = new HashSet<>(Arrays.asList(delimiters));
-
-    public static boolean isDelimeter(String lexeme) {
-        if (lexeme == null) return false;
-        return delimitersHashSet.contains(lexeme);
+    private enum Type {
+        DOT,
+        SEMICOLON,
+        COMMA
     }
 
-    public static DelimiterToken getToken(String lexeme) {
-        if (isDelimeter(lexeme)) {
-            return new DelimiterToken(lexeme);
-        }
-        return null;
-    }
+    private Type type;
 
-    private String lexeme;
-
-    private DelimiterToken(String lexeme) {
-        this.lexeme = lexeme;
+    private DelimiterToken(Type type) {
+        this.type = type;
     }
 
     @Override
     public String toString() {
-        return String.format("T_delimiter(%s)", lexeme);
+        return String.format("T_delimiter_(%s)",
+                type.toString().toLowerCase());
+    }
+
+
+    public static class Builder extends SimpleRegexBuilder {
+        private static final String regexp =
+                "^[.;,\\n]$";
+
+        public Builder() {
+            super();
+            super.p = Pattern.compile(regexp);
+        }
+
+        @Override
+        public DelimiterToken build() {
+            if (state.equals(State.MATCH)) {
+                String lexemeS = lexeme.toString();
+                Type type;
+                if (lexemeS.equals(";") || lexemeS.equals("\n"))
+                    type = Type.SEMICOLON;
+                else if (lexemeS.equals("."))
+                    type = Type.DOT;
+                else
+                    type = Type.COMMA;
+                return new DelimiterToken(type);
+            }
+            return null;
+        }
     }
 }

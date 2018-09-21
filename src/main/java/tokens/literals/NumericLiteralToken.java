@@ -1,8 +1,11 @@
 package tokens.literals;
 
 import tokens.Token;
+import tokens.builders.SimpleRegexBuilder;
 import tokens.enums.State;
 import utils.CharacterUtil;
+
+import java.util.regex.Pattern;
 
 public class NumericLiteralToken extends Token {
     private enum Type {
@@ -24,84 +27,28 @@ public class NumericLiteralToken extends Token {
                 type.toString().toLowerCase(), lexeme);
     }
 
-    public static class Builder {
-
-        private StringBuilder lexeme;
-        private int length;
-
-        private State state;
-
-        private boolean hasDot;
-        private boolean hasExponent;
+    public static class Builder extends SimpleRegexBuilder {
+        private static final String regexp =
+                "^[+-]?(([1-9]\\d*)|(\\.\\d+)|([1-9]\\d*)(\\.\\d+))([eE][+-]?\\d+)?$";
 
         public Builder() {
-            lexeme = new StringBuilder();
-            length = 0;
-            hasDot = false;
-            hasExponent = false;
-            state = State.PARTIALLY_MATCH;
+            super();
+            super.p = Pattern.compile(regexp);
         }
 
-        private void appendLexeme(char ch) {
-            lexeme.append(ch);
-            length++;
-        }
-
-        private boolean isSign(char ch) {
-            return ch == '+' || ch == '-';
-        }
-
-        private boolean isExponent(char ch) {
-            return ch == 'E' || ch == 'e';
-        }
-
-        public State addNextChar(char ch) {
-            if (CharacterUtil.isDigit(ch)) {
-                appendLexeme(ch);
-                return state = State.MATCH;
-            }
-            if (isSign(ch)) {
-                if (length == 0) {
-                    appendLexeme(ch);
-                    return state = State.PARTIALLY_MATCH;
-                }
-                if (isExponent(lexeme.charAt(length - 1))) {
-                    appendLexeme(ch);
-                    return state = State.PARTIALLY_MATCH;
-                }
-                return State.NOT_MATCH;
-            }
-            if (isExponent(ch)) {
-                if (length == 0) {
-                    return State.NOT_MATCH;
-                }
-                if (!hasExponent &&
-                        CharacterUtil.isDigit(lexeme.charAt(length - 1))) {
-                    appendLexeme(ch);
-                    hasExponent = true;
-                    return state = State.PARTIALLY_MATCH;
-                }
-                return State.NOT_MATCH;
-            }
-            if (ch == '.') {
-                if (length == 0 ||
-                        (length == 1 && isSign(lexeme.charAt(length - 1))) ||
-                        (!hasDot && !hasExponent)) {
-                    appendLexeme(ch);
-                    hasDot = true;
-                    return state = State.PARTIALLY_MATCH;
-                }
-                return State.NOT_MATCH;
-            }
-            return State.NOT_MATCH;
-        }
-
+        @Override
         public NumericLiteralToken build() {
             if (state.equals(State.MATCH)) {
                 Type type;
-                if (hasDot || hasExponent) type = Type.FLOAT;
-                else type = Type.INTEGER;
-                return new NumericLiteralToken(type, lexeme.toString());
+                String lexemeS = lexeme.toString();
+                if (lexemeS.contains("e") ||
+                        lexemeS.contains("E") ||
+                        lexemeS.contains(".")) {
+                    type = Type.FLOAT;
+                } else {
+                    type = Type.INTEGER;
+                }
+                return new NumericLiteralToken(type, lexemeS);
             }
             return null;
         }

@@ -16,7 +16,7 @@ public class PlainIdentifierToken extends Token {
         return String.format("T_identifier(%s)", lexeme);
     }
 
-    public static class Builder {
+    public static class Builder implements tokens.builders.Builder {
 
         private StringBuilder lexeme;
         private int length;
@@ -45,6 +45,7 @@ public class PlainIdentifierToken extends Token {
             length++;
         }
 
+        @Override
         public State addNextChar(char ch) {
             if (CharacterUtil.isOperatorChar(ch)) {
                 // first operator char at the start of lexeme
@@ -79,6 +80,7 @@ public class PlainIdentifierToken extends Token {
             return State.NOT_MATCH;
         }
 
+        @Override
         public PlainIdentifierToken build() {
             if (state.equals(State.MATCH))
                 return new PlainIdentifierToken(lexeme.toString());

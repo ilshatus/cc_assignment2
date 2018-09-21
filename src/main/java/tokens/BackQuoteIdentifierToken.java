@@ -1,27 +1,24 @@
-package tokens.literals;
+package tokens;
 
-import tokens.Token;
-import tokens.builders.SimpleRegexBuilder;
 import tokens.enums.State;
+import tokens.builders.SimpleRegexBuilder;
 
 import java.util.regex.Pattern;
 
-public class LogicalLiteralToken extends Token {
+public class BackQuoteIdentifierToken extends Token {
     private String lexeme;
 
-    private LogicalLiteralToken(String lexeme) {
+    private BackQuoteIdentifierToken(String lexeme) {
         this.lexeme = lexeme;
     }
 
     @Override
     public String toString() {
-        return String.format("T_literal_logical(%s)", lexeme);
+        return String.format("T_identifier(%s)", lexeme);
     }
 
-
     public static class Builder extends SimpleRegexBuilder {
-        private static final String regexp =
-                "^true|false$";
+        private static final String regexp = "^`.*`$";
 
         public Builder() {
             super();
@@ -29,9 +26,9 @@ public class LogicalLiteralToken extends Token {
         }
 
         @Override
-        public LogicalLiteralToken build() {
+        public BackQuoteIdentifierToken build() {
             if (state.equals(State.MATCH))
-                return new LogicalLiteralToken(lexeme.toString());
+                return new BackQuoteIdentifierToken(lexeme.toString());
             return null;
         }
     }

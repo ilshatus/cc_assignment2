@@ -16,7 +16,7 @@ public class SymbolLiteralToken extends Token {
         return String.format("T_literal_symbol(%s)", lexeme);
     }
 
-    public static class Builder {
+    public static class Builder implements tokens.builders.Builder {
 
         private State state;
 
@@ -30,6 +30,7 @@ public class SymbolLiteralToken extends Token {
             this.state = State.PARTIALLY_MATCH;
         }
 
+        @Override
         public State addNextChar(char ch) {
             if (ch == '\'') {
                 hasQuote = true;
@@ -45,6 +46,7 @@ public class SymbolLiteralToken extends Token {
             return State.NOT_MATCH;
         }
 
+        @Override
         public SymbolLiteralToken build() {
             if (state.equals(State.MATCH))
                 return new SymbolLiteralToken('\'' + plainIdBuilder.getLexeme().toString());

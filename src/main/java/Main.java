@@ -1,7 +1,12 @@
-import sun.misc.Regexp;
-import tokens.BackQuoteIdentifier;
+import tokens.BackQuoteIdentifierToken;
+import tokens.DelimiterToken;
+import tokens.KeywordToken;
 import tokens.Token;
-import tokens.literals.SymbolLiteralToken;
+import tokens.builders.Builder;
+import tokens.literals.CharacterLiteralToken;
+import tokens.literals.MultilineStringLiteralToken;
+import tokens.literals.NumericLiteralToken;
+import tokens.literals.StringLiteralToken;
 
 import java.io.*;
 
@@ -19,14 +24,23 @@ public class Main {
         return String.copyValueOf(input);
     }
 
+
     public static void main(String[] args) {
-        String s = "";
-        SymbolLiteralToken.Builder builder = new SymbolLiteralToken.Builder();
+        /*
+         Пример работы
+         */
+
+        String s = ";";
+        Builder builder = new DelimiterToken.Builder();
         for (int i = 0; i < s.length(); i++) {
             if (builder.addNextChar(s.charAt(i)).equals(NOT_MATCH)) {
                 System.out.println("bad");
             }
         }
+
+
+        /////////////////////////////////////////////////
+
         System.out.println(builder.build());
         try {
             String input = readFile("in.txt");

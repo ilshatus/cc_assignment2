@@ -1,27 +1,27 @@
 package tokens.literals;
 
 import tokens.Token;
-import tokens.builders.SimpleRegexBuilder;
 import tokens.enums.State;
+import tokens.builders.SimpleRegexBuilder;
 
 import java.util.regex.Pattern;
 
-public class LogicalLiteralToken extends Token {
+public class MultilineStringLiteralToken extends Token {
     private String lexeme;
 
-    private LogicalLiteralToken(String lexeme) {
+    private MultilineStringLiteralToken(String lexeme) {
         this.lexeme = lexeme;
     }
 
     @Override
     public String toString() {
-        return String.format("T_literal_logical(%s)", lexeme);
+        return String.format("T_literal_multiline_string(%s)", lexeme);
     }
 
 
     public static class Builder extends SimpleRegexBuilder {
         private static final String regexp =
-                "^true|false$";
+                "^\"\"\"([^\\\\\\r]?|\\\\(u(\\d|[a-f]|[A-F]){4}|[0-7]{3}|[btnfr\\\\'\"]))*\"\"\"$";
 
         public Builder() {
             super();
@@ -29,9 +29,9 @@ public class LogicalLiteralToken extends Token {
         }
 
         @Override
-        public LogicalLiteralToken build() {
+        public MultilineStringLiteralToken build() {
             if (state.equals(State.MATCH))
-                return new LogicalLiteralToken(lexeme.toString());
+                return new MultilineStringLiteralToken(lexeme.toString());
             return null;
         }
     }
