@@ -24,8 +24,8 @@ public class Main {
          Пример работы
          */
 
-        String s = "val\nval";
-        Builder builder = new KeywordToken.Builder();
+        String s = "";
+        Builder builder = new PlainIdentifierToken.Builder();
         for (int i = 0; i < s.length(); i++) {
             if (builder.addNextChar(s.charAt(i)).equals(NOT_MATCH)) {
                 System.out.println("bad");
