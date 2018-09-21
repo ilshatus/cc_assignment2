@@ -20,22 +20,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-        /*
-         Пример работы
-         */
-
-        String s = "";
-        Builder builder = new PlainIdentifierToken.Builder();
-        for (int i = 0; i < s.length(); i++) {
-            if (builder.addNextChar(s.charAt(i)).equals(NOT_MATCH)) {
-                System.out.println("bad");
-            }
-        }
-
-
-        /////////////////////////////////////////////////
-
-        System.out.println(builder.build());
         try {
             String input = readFile("in.txt");
             LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(input);
