@@ -9,7 +9,8 @@ public class DelimiterToken extends Token {
     private enum Type {
         DOT,
         SEMICOLON,
-        COMMA
+        COMMA,
+        NEW_LINE
     }
 
     private Type type;
@@ -39,8 +40,10 @@ public class DelimiterToken extends Token {
             if (state.equals(State.MATCH)) {
                 String lexemeS = lexeme.toString();
                 Type type;
-                if (lexemeS.equals(";") || lexemeS.equals("\n"))
+                if (lexemeS.equals(";"))
                     type = Type.SEMICOLON;
+                if (lexemeS.equals("\n"))
+                    type = Type.NEW_LINE;
                 else if (lexemeS.equals("."))
                     type = Type.DOT;
                 else

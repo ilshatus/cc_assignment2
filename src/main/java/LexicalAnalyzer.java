@@ -8,6 +8,7 @@ public class LexicalAnalyzer {
     }
 
     Token getNextToken() {
+
         return null;
     }
 
