@@ -80,7 +80,7 @@ public class LexicalAnalyzer {
         while(top < inputCode.length()){
             char c = inputCode.charAt(top);
             if(c==' ' || c =='\n'){
-                System.out.println("skip " + c);
+      //          System.out.println("skip " + c);
                 top++;
             } else{
                 break;
@@ -88,19 +88,19 @@ public class LexicalAnalyzer {
         }
         Builder last = null;
         int pos = top;
-        System.out.println("start decode " + top);
+     //   System.out.println("start decode " + top);
         for(int i=top;i<inputCode.length();++i){
             char ch = inputCode.charAt(i);
-            System.out.println("next char [" + ch+"]");
+         //   System.out.println("next char [" + ch+"]");
             int total = 0;
             for(int j=0;j<builders.length;++j){
                 if(builders[j] == null)
                     continue;
                 total++;
                 State x = builders[j].addNextChar(ch);
-                System.out.println(ch + " buil "+j+" got " + x);
+            //    System.out.println(ch + " buil "+j+" got " + x);
                 if(x == State.MATCH){
-                    System.out.println("full match " + j + " on "+i);
+             //       System.out.println("full match " + j + " on "+i);
                     pos = i;
                     last = builders[j];
                 } else if(x == State.NOT_MATCH){
@@ -123,7 +123,7 @@ public class LexicalAnalyzer {
 
         if(last == null)
             return null;
-        System.out.println("HERE ");
+     //   System.out.println("HERE ");
         return last.build();
     }
 
