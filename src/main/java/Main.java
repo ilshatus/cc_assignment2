@@ -1,9 +1,6 @@
 import tokens.*;
 import tokens.builders.Builder;
-import tokens.literals.CharacterLiteralToken;
-import tokens.literals.MultilineStringLiteralToken;
-import tokens.literals.NumericLiteralToken;
-import tokens.literals.StringLiteralToken;
+import tokens.literals.*;
 
 import java.io.*;
 
@@ -27,8 +24,8 @@ public class Main {
          Пример работы
          */
 
-        String s = "dsfdsf_dasd_&&&_";
-        Builder builder = new PlainIdentifierToken.Builder();
+        String s = "val\nval";
+        Builder builder = new KeywordToken.Builder();
         for (int i = 0; i < s.length(); i++) {
             if (builder.addNextChar(s.charAt(i)).equals(NOT_MATCH)) {
                 System.out.println("bad");

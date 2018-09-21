@@ -21,11 +21,11 @@ public class StringLiteralToken extends Token {
 
     public static class Builder extends SimpleRegexBuilder {
         private static final String regexp =
-                "^\"([^\\\\\\n\\r]?|\\\\(u(\\d|[a-f]|[A-F]){4}|[0-7]{3}|[btnfr\\\\'\"]))*\"$";
+                "^\"([^\\\\\\n\\r\\\"]?|\\\\(u(\\d|[a-f]|[A-F]){4}|[0-7]{3}|[btnfr\\\\'\"]))*\"$";
 
         public Builder() {
             super();
-            super.p = Pattern.compile(regexp);
+            super.p = Pattern.compile(regexp, Pattern.MULTILINE);
         }
 
         @Override

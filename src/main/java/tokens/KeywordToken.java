@@ -43,7 +43,7 @@ public class KeywordToken extends Token {
             regexp.deleteCharAt(regexp.length() - 1);
             regexp.append('$');
 
-            super.p = Pattern.compile(regexp.toString());
+            super.p = Pattern.compile(regexp.toString(), Pattern.MULTILINE);
         }
 
         @Override
