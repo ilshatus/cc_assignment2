@@ -30,8 +30,8 @@ public class Main {
          Пример работы
          */
 
-        String s = ";";
-        Builder builder = new DelimiterToken.Builder();
+        String s = "⇒";
+        Builder builder = new KeywordToken.Builder();
         for (int i = 0; i < s.length(); i++) {
             if (builder.addNextChar(s.charAt(i)).equals(NOT_MATCH)) {
                 System.out.println("bad");

@@ -29,7 +29,7 @@ public class KeywordToken extends Token {
                 "throw", "val", "case", "else", "for", "lazy", "object", "return", "trait", "var", "catch",
                 "extends", "forSome", "macro", "override", "sealed", "try", "while", "class", "if",
                 "match", "package", "super", "with", "def", "final", "implicit", "new", "private",
-                "this", "type", "yield", "_", ":", "=", "=>", "<-", "<:", ">:", "#", "@" };
+                "this", "type", "yield", "_", ":", "=", "=>", "<-", "<:", ">:", "#", "@", "←", "⇒" };
 
         public Builder() {
             super();
