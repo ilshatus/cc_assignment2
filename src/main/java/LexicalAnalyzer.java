@@ -10,7 +10,8 @@ public class LexicalAnalyzer {
 
     private void addBuilders() {
         builders = new Builder[11];
-        builders[0] = new CharacterLiteralToken.Builder();
+        builders[0] = new PlainIdentifierToken.Builder();
+
         builders[1] = new LogicalLiteralToken.Builder();
         builders[2] = new MultilineStringLiteralToken.Builder();
         builders[3] = new NumericLiteralToken.Builder();
@@ -19,7 +20,7 @@ public class LexicalAnalyzer {
         builders[6] = new BackQuoteIdentifierToken.Builder();
         builders[7] = new DelimiterToken.Builder();
         builders[8] = new KeywordToken.Builder();
-        builders[9] = new PlainIdentifierToken.Builder();
+        builders[9] = new CharacterLiteralToken.Builder();
         builders[10] = new ParenthesesToken.Builder();
     }
 
@@ -100,7 +101,7 @@ public class LexicalAnalyzer {
                 State x = builders[j].addNextChar(ch);
             //    System.out.println(ch + " buil "+j+" got " + x);
                 if(x == State.MATCH){
-             //       System.out.println("full match " + j + " on "+i);
+                //    System.out.println("full match " + j + " on "+i);
                     pos = i;
                     last = builders[j];
                 } else if(x == State.NOT_MATCH){
