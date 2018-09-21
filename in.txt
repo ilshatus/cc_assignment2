@@ -1,13 +1,8 @@
-weqwe
-wqeq
-weqwe
+object HelloWorld {
 
-
-
-
-
-
-
-
-
-erwew
+  def main(args: Array[String]) {
+    val a = 100
+    val b = 2
+    print(a + b)
+  }
+}
