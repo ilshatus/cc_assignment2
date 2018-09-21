@@ -1,7 +1,4 @@
-import tokens.BackQuoteIdentifierToken;
-import tokens.DelimiterToken;
-import tokens.KeywordToken;
-import tokens.Token;
+import tokens.*;
 import tokens.builders.Builder;
 import tokens.literals.CharacterLiteralToken;
 import tokens.literals.MultilineStringLiteralToken;
@@ -30,8 +27,8 @@ public class Main {
          Пример работы
          */
 
-        String s = "⇒";
-        Builder builder = new KeywordToken.Builder();
+        String s = "dsfdsf_dasd_&&&_";
+        Builder builder = new PlainIdentifierToken.Builder();
         for (int i = 0; i < s.length(); i++) {
             if (builder.addNextChar(s.charAt(i)).equals(NOT_MATCH)) {
                 System.out.println("bad");

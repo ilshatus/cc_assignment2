@@ -21,7 +21,7 @@ public class DelimiterToken extends Token {
 
     @Override
     public String toString() {
-        return String.format("T_delimiter_(%s)",
+        return String.format("T_delimiter(%s)",
                 type.toString().toLowerCase());
     }
 
