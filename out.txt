@@ -1,1 +1,2 @@
-T_error(cause="Error in comments", symbol=10)
+T_delimiter(new_line)
+T_error(Token not recognized)

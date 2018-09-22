@@ -31,6 +31,7 @@ public class LexicalAnalyzer {
      * Removes all comments
      */
     private void preprocess() {
+        inputCode = inputCode.replaceAll("\r", "");
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < inputCode.length() - 1; ++i) {
             if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '*') {
@@ -38,7 +39,7 @@ public class LexicalAnalyzer {
                 int pos = i;
                 for (int j = i + 2; j < inputCode.length(); ++j) {
                     if (inputCode.charAt(j) == '/' && inputCode.charAt(j + 1) == '*') {
-                        errorToken = new ErrorToken("Error in /* comment", j);
+                        errorToken = new ErrorToken("Error in /* comment");
                         return;
                     }
                     if (inputCode.charAt(j) == '*' && inputCode.charAt(j + 1) == '/') {
@@ -47,9 +48,8 @@ public class LexicalAnalyzer {
                         break;
                     }
                 }
-
                 if (!flag) {
-                    errorToken = new ErrorToken("Error in comments", i);
+                    errorToken = new ErrorToken("Multiline comment has no end");
                     return;
                 }
                 i = pos; // skip whole comment
@@ -78,7 +78,7 @@ public class LexicalAnalyzer {
     }
 
     public LexicalAnalyzer(String inputCode) {
-        this.inputCode = inputCode.replaceAll("\r", "");
+        this.inputCode = inputCode;
         preprocess();
         addBuilders();
         top = 0;
@@ -126,7 +126,7 @@ public class LexicalAnalyzer {
 
         }
         if (last == null) {
-            errorToken = new ErrorToken("Token not recognized", top);
+            errorToken = new ErrorToken("Token not recognized");
             first = false;
             return errorToken;
         }
