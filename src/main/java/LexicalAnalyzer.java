@@ -8,6 +8,8 @@ public class LexicalAnalyzer {
     private Builder builders[];
     private int top = 0;
 
+    boolean errorInComment = false;
+
     private void addBuilders() {
         builders = new Builder[11];
         builders[0] = new PlainIdentifierToken.Builder();
@@ -40,6 +42,8 @@ public class LexicalAnalyzer {
 
                 if (!flag) {
                     System.out.println("not found end of comment");
+                    errorInComment = true;
+                    return;
                 }
                 i = pos;
                 continue;
@@ -75,20 +79,22 @@ public class LexicalAnalyzer {
     }
 
     Token getNextToken() {
+        if(errorInComment){
+            return new ErrorToken("not found after /* the end of comment ",' ');
+        }
+        if(top == inputCode.length()) {
+            top++;
+            return new EndOfFileToken();
+        }
+        if(top > inputCode.length())
+            return null;
         addBuilders();
-
-        while (top < inputCode.length()) {
-            char c = inputCode.charAt(top);
-            if (c == ' ' || c == '\n') {
-                //          System.out.println("skip " + c);
-                top++;
-            } else {
-                break;
-            }
+        while (top < inputCode.length() && inputCode.charAt(top)==' ') {
+            top++;
         }
         Builder last = null;
         int pos = top;
-        //   System.out.println("start decode " + top);
+      //     System.out.println("start decode " + top);
         for (int i = top; i < inputCode.length(); ++i) {
             char ch = inputCode.charAt(i);
             //   System.out.println("next char [" + ch+"]");
@@ -113,17 +119,19 @@ public class LexicalAnalyzer {
 
         }
 
-        if (last == null)
-            System.out.println("last null");
-
         if (last == null && top < inputCode.length()) {
-            System.out.println("couldnt identify");
+            return new ErrorToken("couldnt process starting from : ", inputCode.charAt(top));
+        }
+
+        last.clear();
+        for(int i=top;i<=pos;++i){
+            last.addNextChar(inputCode.charAt(i));
         }
         top = pos + 1; // move top for next token
 
         if (last == null)
             return null;
-        //   System.out.println("HERE ");
+          // System.out.println("HERE ");
         return last.build();
     }
 

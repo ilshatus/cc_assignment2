@@ -1,2 +1,14 @@
+<<<<<<< Updated upstream
 val l = 12.call
 val b = 11
+=======
+
+object HelloWorld {
+
+  def main(args: Array[String]) {
+    val a = c.a()
+    val b = 2
+    print(a + b)
+  }
+}
+>>>>>>> Stashed changes
