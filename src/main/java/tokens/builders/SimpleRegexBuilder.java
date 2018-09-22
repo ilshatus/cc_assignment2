@@ -18,6 +18,11 @@ public abstract class SimpleRegexBuilder implements Builder {
     }
 
     @Override
+    public State getState() {
+        return state;
+    }
+
+    @Override
     public void clear() {
         lexeme = new StringBuilder();
         length = 0;

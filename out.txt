@@ -1,2 +1,9 @@
-T_literal_character('a')
-T_error(Token not recognized)
+T_comment(/*
+
+/*
+*/
+
+*/)
+T_delimiter(new_line)
+T_comment(//fdsfsfs)
+T_end_of_file()
