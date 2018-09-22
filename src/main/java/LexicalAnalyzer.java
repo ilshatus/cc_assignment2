@@ -4,13 +4,14 @@ import tokens.enums.State;
 import tokens.literals.*;
 
 public class LexicalAnalyzer {
-    private String inputCode;
-    private Builder builders[];
-    private int top = 0;
+    private String inputCode; //text
+    private Builder builders[]; // all tokens analyzers
+    private int top; // index of current character
 
-    boolean errorInComment = false;
+    private boolean errorInComment = false; //if preprocessing found error in comment structure
+    private boolean first; // ask for first token or not
 
-    private void addBuilders() {
+    private void addBuilders() { //add builders for all tokens
         builders = new Builder[11];
         builders[0] = new PlainIdentifierToken.Builder();
         builders[1] = new LogicalLiteralToken.Builder();
@@ -27,12 +28,16 @@ public class LexicalAnalyzer {
 
     private void preprocess() {
         StringBuilder result = new StringBuilder();
-        System.out.println("HERE \n" + inputCode);
+        System.out.println("BEFORE preprocess : \n" + inputCode);
         for (int i = 0; i < inputCode.length() - 1; ++i) {
             if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '*') {
                 boolean flag = false;
                 int pos = i;
                 for (int j = i + 2; j < inputCode.length(); ++j) {
+                    if (inputCode.charAt(j) == '/' && inputCode.charAt(j + 1) == '*') {
+                        errorInComment = true;
+                        return;
+                    }
                     if (inputCode.charAt(j) == '*' && inputCode.charAt(j + 1) == '/') {
                         pos = j + 1;
                         flag = true;
@@ -45,7 +50,7 @@ public class LexicalAnalyzer {
                     errorInComment = true;
                     return;
                 }
-                i = pos;
+                i = pos; // skip whole comment
                 continue;
             } else if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '/') {
                 boolean flag = false;
@@ -59,16 +64,16 @@ public class LexicalAnalyzer {
                 }
 
                 if (!flag) {
-                    i = inputCode.length();
+                    i = inputCode.length(); // skip till the end of file
                 } else {
-                    i = pos;
+                    i = pos; // skip comment
                 }
                 continue;
             }
-            result.append(inputCode.charAt(i));
+            result.append(inputCode.charAt(i)); //add character in not in comment
         }
         inputCode = result.toString();
-        System.out.println("AFTER \n" + inputCode);
+        System.out.println("After preprocessing \n" + inputCode);
     }
 
     public LexicalAnalyzer(String inputCode) {
@@ -76,62 +81,59 @@ public class LexicalAnalyzer {
         preprocess();
         addBuilders();
         top = 0;
+        first = true;
     }
 
     Token getNextToken() {
-        if(errorInComment){
-            return new ErrorToken("not found after /* the end of comment ",' ');
+        if (errorInComment) {
+            if (first) {
+                first = false;
+                return new ErrorToken(" error in /* comment ", ' ');
+            }
+            return null;
         }
-        if(top == inputCode.length()) {
+        if (top == inputCode.length()) {
             top++;
             return new EndOfFileToken();
         }
-        if(top > inputCode.length())
+        if (top > inputCode.length())
             return null;
         addBuilders();
-        while (top < inputCode.length() && inputCode.charAt(top)==' ') {
+        while (top < inputCode.length() && inputCode.charAt(top) == ' ') {
             top++;
         }
         Builder last = null;
         int pos = top;
-      //     System.out.println("start decode " + top);
         for (int i = top; i < inputCode.length(); ++i) {
             char ch = inputCode.charAt(i);
-            //   System.out.println("next char [" + ch+"]");
-            int total = 0;
+            int total = 0; // total correct or partially correct token builders
             for (int j = 0; j < builders.length; ++j) {
-                if (builders[j] == null)
+                if (builders[j] == null) // skip bad tokens
                     continue;
                 total++;
-                State x = builders[j].addNextChar(ch);
-                //    System.out.println(ch + " buil "+j+" got " + x);
-                if (x == State.MATCH) {
-                    //    System.out.println("full match " + j + " on "+i);
-                    pos = i;
-                    last = builders[j];
+                State x = builders[j].addNextChar(ch); //add next character
+                if (x == State.MATCH) { // if token identifies the string
+                    pos = i; // remember last position
+                    last = builders[j]; //remember token
                 } else if (x == State.NOT_MATCH) {
-                    builders[j] = null;
-                    --total;
+                    builders[j] = null; // delete this token identifier
+                    --total; // dont count this one
                 }
             }
-            if (total == 0)
+            if (total == 0) //noone recognizes
                 break;
 
         }
-
-        if (last == null && top < inputCode.length()) {
+        if (last == null) {
             return new ErrorToken("couldnt process starting from : ", inputCode.charAt(top));
         }
 
         last.clear();
-        for(int i=top;i<=pos;++i){
-            last.addNextChar(inputCode.charAt(i));
+        for (int i = top; i <= pos; ++i) {
+            last.addNextChar(inputCode.charAt(i)); // add new token
         }
         top = pos + 1; // move top for next token
 
-        if (last == null)
-            return null;
-          // System.out.println("HERE ");
         return last.build();
     }
 
