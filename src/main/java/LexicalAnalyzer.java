@@ -106,21 +106,21 @@ public class LexicalAnalyzer {
         int pos = top;
         for (int i = top; i < inputCode.length(); ++i) {
             char ch = inputCode.charAt(i);
-            int total = 0;
+            int total = 0; // total correct or partially correct token builders
             for (int j = 0; j < builders.length; ++j) {
-                if (builders[j] == null)
+                if (builders[j] == null) // skip bad tokens
                     continue;
                 total++;
-                State x = builders[j].addNextChar(ch);
-                if (x == State.MATCH) {
-                    pos = i;
-                    last = builders[j];
+                State x = builders[j].addNextChar(ch); //add next character
+                if (x == State.MATCH) { // if token identifies the string
+                    pos = i; // remember last position
+                    last = builders[j]; //remember token
                 } else if (x == State.NOT_MATCH) {
-                    builders[j] = null;
-                    --total;
+                    builders[j] = null; // delete this token identifier
+                    --total; // dont count this one
                 }
             }
-            if (total == 0)
+            if (total == 0) //noone recognizes
                 break;
 
         }
@@ -130,7 +130,7 @@ public class LexicalAnalyzer {
 
         last.clear();
         for (int i = top; i <= pos; ++i) {
-            last.addNextChar(inputCode.charAt(i));
+            last.addNextChar(inputCode.charAt(i)); // add new token
         }
         top = pos + 1; // move top for next token
 
