@@ -1,1 +1,1 @@
-T_error(cause="Error in /* comment", symbol=3)
+T_error(cause="Error in comments", symbol=10)

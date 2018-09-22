@@ -11,6 +11,6 @@ public class ErrorToken extends Token {
 
     @Override
     public String toString() {
-        return String.format("T_error(cause=\"%s\", symbol=%d)", cause, symbol);
+        return String.format("T_error(cause=\"%s\", line=%d)", cause, symbol);
     }
 }
