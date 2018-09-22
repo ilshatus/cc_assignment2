@@ -17,6 +17,13 @@ public abstract class SimpleRegexBuilder implements Builder {
         state = State.PARTIALLY_MATCH;
     }
 
+    @Override
+    public void clear() {
+        lexeme = new StringBuilder();
+        length = 0;
+        state = State.PARTIALLY_MATCH;
+    }
+
     private void appendLexeme(char ch) {
         lexeme.append(ch);
         length++;

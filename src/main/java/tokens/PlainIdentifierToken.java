@@ -32,6 +32,14 @@ public class PlainIdentifierToken extends Token {
             this.state = State.PARTIALLY_MATCH;
         }
 
+        @Override
+        public void clear() {
+            this.lexeme = new StringBuilder();
+            this.length = 0;
+            this.hasOperator = false;
+            this.state = State.PARTIALLY_MATCH;
+        }
+
         public StringBuilder getLexeme() {
             return lexeme;
         }

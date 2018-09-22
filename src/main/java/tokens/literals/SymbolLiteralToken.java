@@ -31,6 +31,13 @@ public class SymbolLiteralToken extends Token {
         }
 
         @Override
+        public void clear() {
+            this.hasQuote = false;
+            this.plainIdBuilder = new PlainIdentifierToken.Builder();
+            this.state = State.PARTIALLY_MATCH;
+        }
+
+        @Override
         public State addNextChar(char ch) {
             if (ch == '\'') {
                 hasQuote = true;

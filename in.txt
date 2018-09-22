@@ -1,8 +1,2 @@
-object HelloWorld {
-
-  def main(args: Array[String]) {
-    val a = c.a()
-    val b = 2
-    print(a + b)
-  }
-}
+val l = 12.call
+val b = 11
