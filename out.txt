@@ -1,2 +1,2 @@
-T_delimiter(new_line)
+T_literal_character('a')
 T_error(Token not recognized)

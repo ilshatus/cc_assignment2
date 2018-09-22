@@ -39,7 +39,7 @@ public class SymbolLiteralToken extends Token {
 
         @Override
         public State addNextChar(char ch) {
-            if (ch == '\'') {
+            if (ch == '\'' && !hasQuote) {
                 hasQuote = true;
                 return state = State.PARTIALLY_MATCH;
             }
