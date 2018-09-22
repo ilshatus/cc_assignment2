@@ -21,7 +21,8 @@ public class MultilineStringLiteralToken extends Token {
 
     public static class Builder extends SimpleRegexBuilder {
         private static final String regexp =
-                "^\"\"\"([^\\\\\\r]?|\\\\(u(\\d|[a-f]|[A-F]){4}|[0-7]{3}|[btnfr\\\\'\"]))*\"\"\"$";
+                "^\"\"\"(([^\\\\\\r\"]?|\\\\(u(\\d|[a-f]|[A-F]){4}|[0-7]{3}|[btnfr\\\\'\"]))|" +
+                        "((\"\"|\")([^\\\\\\r\"]|\\\\(u(\\d|[a-f]|[A-F]){4}|[0-7]{3}|[btnfr\\\\'\"]))))*\"\"\"$";
 
         public Builder() {
             super();
