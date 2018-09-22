@@ -14,7 +14,7 @@ public class SimpleCommentToken extends Token {
 
     @Override
     public String toString() {
-        return String.format("T_identifier(%s)", lexeme);
+        return String.format("T_comment(%s)", lexeme);
     }
 
     public static class Builder extends SimpleRegexBuilder {

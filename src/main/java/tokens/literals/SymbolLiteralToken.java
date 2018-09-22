@@ -31,6 +31,11 @@ public class SymbolLiteralToken extends Token {
         }
 
         @Override
+        public State getState() {
+            return null;
+        }
+
+        @Override
         public void clear() {
             this.hasQuote = false;
             this.plainIdBuilder = new PlainIdentifierToken.Builder();

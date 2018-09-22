@@ -8,10 +8,6 @@ public class LexicalAnalyzer {
     private Builder builders[]; // all tokens analyzers
     private int top; // index of current character
 
-    private ErrorToken errorToken;
-
-    private boolean first; // ask for first token or not
-
     private void addBuilders() { //add builders for all tokens
         builders = new Builder[13];
         builders[0] = new PlainIdentifierToken.Builder();
@@ -24,81 +20,18 @@ public class LexicalAnalyzer {
         builders[7] = new DelimiterToken.Builder();
         builders[8] = new KeywordToken.Builder();
         builders[9] = new CharacterLiteralToken.Builder();
-        builders[10] = new MultilineCommentToken.Builder();
-        builders[11] = new SimpleCommentToken.Builder();
-        builders[12] = new ParenthesesToken.Builder();
-    }
-
-    /**
-     * Removes all comments
-     */
-    private void preprocess() {
-        inputCode = inputCode.replaceAll("\r", "");
-        StringBuilder result = new StringBuilder();
-        int i = 0;
-        for (; i < inputCode.length() - 1; ++i) {
-            if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '*') {
-                boolean flag = false;
-                int pos = i;
-                for (int j = i + 2; j < inputCode.length(); ++j) {
-                    if (inputCode.charAt(j) == '/' && inputCode.charAt(j + 1) == '*') {
-                        errorToken = new ErrorToken("Error in /* comment");
-                        return;
-                    }
-                    if (inputCode.charAt(j) == '*' && inputCode.charAt(j + 1) == '/') {
-                        pos = j + 1;
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    errorToken = new ErrorToken("Multiline comment has no end");
-                    return;
-                }
-                i = pos; // skip whole comment
-                continue;
-            } else if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '/') {
-                boolean flag = false;
-                int pos = i;
-                for (int j = i + 2; j < inputCode.length(); ++j) {
-                    if (inputCode.charAt(j) == '\n') {
-                        pos = j;
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if (!flag) {
-                    i = inputCode.length(); // skip till the end of file
-                } else {
-                    i = pos; // skip comment
-                }
-                continue;
-            }
-            result.append(inputCode.charAt(i)); //add character in not in comment
-        }
-        if (i < inputCode.length()) {
-            result.append(inputCode.charAt(i));
-        }
-        inputCode = result.toString();
+        builders[10] = new ParenthesesToken.Builder();
+        builders[11] = new MultilineCommentToken.Builder();
+        builders[12] = new SimpleCommentToken.Builder();
     }
 
     public LexicalAnalyzer(String inputCode) {
-        this.inputCode = inputCode;
-      //  preprocess();
+        this.inputCode = inputCode.replaceAll("\r", "");
         addBuilders();
         top = 0;
-        first = true;
     }
 
     Token getNextToken() {
-        if (errorToken != null) {
-            if (first) {
-                first = false;
-                return errorToken;
-            }
-            return null;
-        }
         if (top == inputCode.length()) {
             top++;
             return new EndOfFileToken();
@@ -109,7 +42,6 @@ public class LexicalAnalyzer {
         while (top < inputCode.length() && inputCode.charAt(top) == ' ') {
             top++;
         }
-        System.out.println("start " + inputCode.substring(top));
         Builder last = null;
         int pos = top;
         for (int i = top; i < inputCode.length(); ++i) {
@@ -120,11 +52,9 @@ public class LexicalAnalyzer {
                     continue;
                 total++;
                 State x = builders[j].addNextChar(ch); //add next character
-                System.out.println(j + " : "+x + (ch=='\n') + " "+ ch);
                 if (x == State.MATCH) { // if token identifies the string
                     pos = i; // remember last position
                     last = builders[j]; //remember token
-                    System.out.println("match pos "+pos);
                 } else if (x == State.NOT_MATCH) {
                     builders[j] = null; // delete this token identifier
                     --total; // dont count this one
@@ -134,13 +64,16 @@ public class LexicalAnalyzer {
                 break;
 
         }
+
+        if (builders[11] != null &&
+                builders[11].getState().equals(State.PARTIALLY_MATCH)) {
+            top = inputCode.length() + 1;
+            return new ErrorToken("Incorrect comment");
+        }
+
         if (last == null) {
-            int r = Math.min(inputCode.length(), pos + 10);
-            String error_text = "Token not recognized from position "
-                    + top + " the first characters are " + inputCode.substring(pos,r);
-            errorToken = new ErrorToken(error_text);
-            first = false;
-            return errorToken;
+            top = inputCode.length() + 1;
+            return new ErrorToken("Token not recognized");
         }
 
         last.clear();

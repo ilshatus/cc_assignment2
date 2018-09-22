@@ -33,6 +33,11 @@ public class PlainIdentifierToken extends Token {
         }
 
         @Override
+        public State getState() {
+            return null;
+        }
+
+        @Override
         public void clear() {
             this.lexeme = new StringBuilder();
             this.length = 0;

@@ -35,6 +35,11 @@ public class MultilineCommentToken extends Token {
         }
 
         @Override
+        public State getState() {
+            return state;
+        }
+
+        @Override
         public void clear() {
             this.lexeme = new StringBuilder();
             this.length = 0;
