@@ -1,1 +1,7 @@
-val a = 11//fdsfsfsыв
+/*
+
+/*
+*/
+
+*/
+//fdsfsfs

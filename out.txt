@@ -1,6 +1,9 @@
-T_keyword(val)
-T_identifier(a)
-T_keyword(=)
-T_literal_integer(11)
+T_comment(/*
+
+/*
+*/
+
+*/)
+T_delimiter(new_line)
 T_comment(//fdsfsfs)
-T_end_of_file()вы
+T_end_of_file()

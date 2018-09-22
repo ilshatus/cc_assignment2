@@ -72,8 +72,11 @@ public class LexicalAnalyzer {
         }
 
         if (last == null) {
+            int r = Math.min(inputCode.length(), top + 10);
+            String error_text = "on position "+top
+                    + " first characters are "+inputCode.substring(top,r);
             top = inputCode.length() + 1;
-            return new ErrorToken("Token not recognized");
+            return new ErrorToken("Token not recognized " + error_text);
         }
 
         last.clear();
