@@ -8,7 +8,8 @@ public class LexicalAnalyzer {
     private Builder builders[]; // all tokens analyzers
     private int top; // index of current character
 
-    private boolean errorInComment = false; //if preprocessing found error in comment structure
+    private ErrorToken errorToken;
+
     private boolean first; // ask for first token or not
 
     private void addBuilders() { //add builders for all tokens
@@ -37,7 +38,7 @@ public class LexicalAnalyzer {
                 int pos = i;
                 for (int j = i + 2; j < inputCode.length(); ++j) {
                     if (inputCode.charAt(j) == '/' && inputCode.charAt(j + 1) == '*') {
-                        errorInComment = true;
+                        errorToken = new ErrorToken("Error in /* comment", j);
                         return;
                     }
                     if (inputCode.charAt(j) == '*' && inputCode.charAt(j + 1) == '/') {
@@ -48,7 +49,7 @@ public class LexicalAnalyzer {
                 }
 
                 if (!flag) {
-                    errorInComment = true;
+                    errorToken = new ErrorToken("Error in comments", i);
                     return;
                 }
                 i = pos; // skip whole comment
@@ -85,10 +86,10 @@ public class LexicalAnalyzer {
     }
 
     Token getNextToken() {
-        if (errorInComment) {
+        if (errorToken != null) {
             if (first) {
                 first = false;
-                return new ErrorToken(" error in /* comment ", ' ');
+                return errorToken;
             }
             return null;
         }
@@ -120,12 +121,14 @@ public class LexicalAnalyzer {
                     --total; // dont count this one
                 }
             }
-            if (total == 0) //noone recognizes
+            if (total == 0) //none recognizes
                 break;
 
         }
         if (last == null) {
-            return new ErrorToken("couldnt process starting from : ", inputCode.charAt(top));
+            errorToken = new ErrorToken("Token not recognized", top);
+            first = false;
+            return errorToken;
         }
 
         last.clear();
