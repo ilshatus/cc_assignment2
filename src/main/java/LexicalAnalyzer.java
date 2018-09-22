@@ -13,7 +13,7 @@ public class LexicalAnalyzer {
     private boolean first; // ask for first token or not
 
     private void addBuilders() { //add builders for all tokens
-        builders = new Builder[11];
+        builders = new Builder[13];
         builders[0] = new PlainIdentifierToken.Builder();
         builders[1] = new LogicalLiteralToken.Builder();
         builders[2] = new MultilineStringLiteralToken.Builder();
@@ -24,7 +24,9 @@ public class LexicalAnalyzer {
         builders[7] = new DelimiterToken.Builder();
         builders[8] = new KeywordToken.Builder();
         builders[9] = new CharacterLiteralToken.Builder();
-        builders[10] = new ParenthesesToken.Builder();
+        builders[10] = new MultilineCommentToken.Builder();
+        builders[11] = new SimpleCommentToken.Builder();
+        builders[12] = new ParenthesesToken.Builder();
     }
 
     /**
@@ -33,7 +35,8 @@ public class LexicalAnalyzer {
     private void preprocess() {
         inputCode = inputCode.replaceAll("\r", "");
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < inputCode.length() - 1; ++i) {
+        int i = 0;
+        for (; i < inputCode.length() - 1; ++i) {
             if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '*') {
                 boolean flag = false;
                 int pos = i;
@@ -59,7 +62,7 @@ public class LexicalAnalyzer {
                 int pos = i;
                 for (int j = i + 2; j < inputCode.length(); ++j) {
                     if (inputCode.charAt(j) == '\n') {
-                        pos = j + 1;
+                        pos = j;
                         flag = true;
                         break;
                     }
@@ -74,12 +77,15 @@ public class LexicalAnalyzer {
             }
             result.append(inputCode.charAt(i)); //add character in not in comment
         }
+        if (i < inputCode.length()) {
+            result.append(inputCode.charAt(i));
+        }
         inputCode = result.toString();
     }
 
     public LexicalAnalyzer(String inputCode) {
         this.inputCode = inputCode;
-        preprocess();
+      //  preprocess();
         addBuilders();
         top = 0;
         first = true;
@@ -103,6 +109,7 @@ public class LexicalAnalyzer {
         while (top < inputCode.length() && inputCode.charAt(top) == ' ') {
             top++;
         }
+        System.out.println("start " + inputCode.substring(top));
         Builder last = null;
         int pos = top;
         for (int i = top; i < inputCode.length(); ++i) {
@@ -113,9 +120,11 @@ public class LexicalAnalyzer {
                     continue;
                 total++;
                 State x = builders[j].addNextChar(ch); //add next character
+                System.out.println(j + " : "+x + (ch=='\n') + " "+ ch);
                 if (x == State.MATCH) { // if token identifies the string
                     pos = i; // remember last position
                     last = builders[j]; //remember token
+                    System.out.println("match pos "+pos);
                 } else if (x == State.NOT_MATCH) {
                     builders[j] = null; // delete this token identifier
                     --total; // dont count this one
@@ -126,7 +135,10 @@ public class LexicalAnalyzer {
 
         }
         if (last == null) {
-            errorToken = new ErrorToken("Token not recognized");
+            int r = Math.min(inputCode.length(), pos + 10);
+            String error_text = "Token not recognized from position "
+                    + top + " the first characters are " + inputCode.substring(pos,r);
+            errorToken = new ErrorToken(error_text);
             first = false;
             return errorToken;
         }

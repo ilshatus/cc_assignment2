@@ -1,2 +1,8 @@
-T_literal_character('a')
-T_error(Token not recognized)
+T_keyword(val)
+T_identifier(a)
+T_keyword(=)
+T_identifier(b)
+T_error(Token not recognized from position 9 the first characters are 
+
+
+asd)
