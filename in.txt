@@ -1,7 +1,1 @@
-/*
-
-/*
-*/
-
-*/
-//fdsfsfs
+val a = 11//fdsfsfs
