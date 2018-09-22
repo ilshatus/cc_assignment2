@@ -1,9 +1,1 @@
-T_comment(/*
-
-/*
-*/
-
-*/)
-T_delimiter(new_line)
-T_comment(//fdsfsfs)
-T_end_of_file()
+T_error(message="Incorrect comment", line=1)
