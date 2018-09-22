@@ -8,7 +8,8 @@ public class LexicalAnalyzer {
     private Builder builders[]; // all tokens analyzers
     private int top; // index of current character
 
-    private boolean errorInComment = false; //if preprocessing found error in comment structure
+    private ErrorToken errorToken;
+
     private boolean first; // ask for first token or not
 
     private void addBuilders() { //add builders for all tokens
@@ -26,16 +27,19 @@ public class LexicalAnalyzer {
         builders[10] = new ParenthesesToken.Builder();
     }
 
+    /**
+     * Removes all comments
+     */
     private void preprocess() {
+        inputCode = inputCode.replaceAll("\r", "");
         StringBuilder result = new StringBuilder();
-        System.out.println("BEFORE preprocess : \n" + inputCode);
         for (int i = 0; i < inputCode.length() - 1; ++i) {
             if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '*') {
                 boolean flag = false;
                 int pos = i;
                 for (int j = i + 2; j < inputCode.length(); ++j) {
                     if (inputCode.charAt(j) == '/' && inputCode.charAt(j + 1) == '*') {
-                        errorInComment = true;
+                        errorToken = new ErrorToken("Error in /* comment");
                         return;
                     }
                     if (inputCode.charAt(j) == '*' && inputCode.charAt(j + 1) == '/') {
@@ -44,10 +48,8 @@ public class LexicalAnalyzer {
                         break;
                     }
                 }
-
                 if (!flag) {
-                    System.out.println("not found end of comment");
-                    errorInComment = true;
+                    errorToken = new ErrorToken("Multiline comment has no end");
                     return;
                 }
                 i = pos; // skip whole comment
@@ -73,11 +75,10 @@ public class LexicalAnalyzer {
             result.append(inputCode.charAt(i)); //add character in not in comment
         }
         inputCode = result.toString();
-        System.out.println("After preprocessing \n" + inputCode);
     }
 
     public LexicalAnalyzer(String inputCode) {
-        this.inputCode = inputCode.replaceAll("\r", "");
+        this.inputCode = inputCode;
         preprocess();
         addBuilders();
         top = 0;
@@ -85,10 +86,10 @@ public class LexicalAnalyzer {
     }
 
     Token getNextToken() {
-        if (errorInComment) {
+        if (errorToken != null) {
             if (first) {
                 first = false;
-                return new ErrorToken(" error in /* comment ", ' ');
+                return errorToken;
             }
             return null;
         }
@@ -120,12 +121,14 @@ public class LexicalAnalyzer {
                     --total; // dont count this one
                 }
             }
-            if (total == 0) //noone recognizes
+            if (total == 0) //none recognizes
                 break;
 
         }
         if (last == null) {
-            return new ErrorToken("couldnt process starting from : ", inputCode.charAt(top));
+            errorToken = new ErrorToken("Token not recognized");
+            first = false;
+            return errorToken;
         }
 
         last.clear();

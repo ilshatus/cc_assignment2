@@ -1,19 +1,4 @@
-/* asd asdasd  asdasfas */
-
-
-<<<<<<< Updated upstream
-val l = 12.call
-val b = 11
-=======
-
-object HelloWorld {
-
-
-//ad asdasd
-  def main(args: Array[String]) {
-    val a = c.a()
-    val b = 2
-    print(a + b)
-  }
-}
->>>>>>> Stashed changes
+main
+def
+1234
+"asdasd

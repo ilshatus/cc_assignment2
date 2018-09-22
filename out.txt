@@ -1,0 +1,7 @@
+T_identifier(main)
+T_delimiter(new_line)
+T_keyword(def)
+T_delimiter(new_line)
+T_literal_integer(1234)
+T_delimiter(new_line)
+T_error(Token not recognized from position 14 the first characters are "asdasd)

@@ -5,6 +5,6 @@ public class EndOfFileToken extends Token {
 
     @Override
     public String toString() {
-        return "T_end_of_file";
+        return "T_end_of_file()";
     }
 }
