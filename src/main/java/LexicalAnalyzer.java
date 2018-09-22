@@ -26,9 +26,11 @@ public class LexicalAnalyzer {
         builders[10] = new ParenthesesToken.Builder();
     }
 
+    /**
+     * Removes all comments
+     */
     private void preprocess() {
         StringBuilder result = new StringBuilder();
-        System.out.println("BEFORE preprocess : \n" + inputCode);
         for (int i = 0; i < inputCode.length() - 1; ++i) {
             if (inputCode.charAt(i) == '/' && inputCode.charAt(i + 1) == '*') {
                 boolean flag = false;
@@ -46,7 +48,6 @@ public class LexicalAnalyzer {
                 }
 
                 if (!flag) {
-                    System.out.println("not found end of comment");
                     errorInComment = true;
                     return;
                 }
@@ -73,7 +74,6 @@ public class LexicalAnalyzer {
             result.append(inputCode.charAt(i)); //add character in not in comment
         }
         inputCode = result.toString();
-        System.out.println("After preprocessing \n" + inputCode);
     }
 
     public LexicalAnalyzer(String inputCode) {
