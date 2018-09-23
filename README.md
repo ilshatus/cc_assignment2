@@ -26,3 +26,11 @@ Github link: https://github.com/ilshatus/cc_assignment2
 ### Tokens
 
 - Delimetr token '''DelimiterToken.java''' token which accepts all delimetrs ";" "." "," "\n" 
+
+- Keyword token '''KeywordToken.java''' token which accepts all special words in language "abstract", "do", "finally", "import", "null", "protected", "throw", "val", "case", "else", "for", "lazy", "object", "return", "trait", "var", "catch",  "extends", "forSome", "macro", "override", "sealed", "try", "while", "class", "if" and etc.
+     
+- MultilineComment token '''MultilineCommentToken.java''' token which accepts multiline comments in format /* text */
+
+- ParenthesesToken token '''ParenthesesToken.java''' token which accepts parenthesess "(" ")" "\[" "\]" "{" "}"
+
+
