@@ -48,11 +48,9 @@ Github link: https://github.com/ilshatus/cc_assignment2
 
 - Back Quote Identifier  token '''BackQuoteIdentifierToken.java''' token which accepts string in quote `string`
 
-BackQuoteIdentifierToken
-
 - XML  token '''XmlToken.java''' token which accepts XML text.
 
-
+## Literals tokens
 
 
 
