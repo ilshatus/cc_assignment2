@@ -79,7 +79,7 @@ public class LexicalAnalyzer {
 
         if (builders[xmlTokenBuilderId] != null &&
                 (builders[xmlTokenBuilderId].getState().equals(State.PARTIALLY_MATCH)
-                        || hasWhiteSpaces)) {
+                        || !hasWhiteSpaces)) {
             top = inputCode.length() + 1;
             return new ErrorToken("Token not recognized", line);
         }
