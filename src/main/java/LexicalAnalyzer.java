@@ -10,6 +10,9 @@ public class LexicalAnalyzer {
     private int top; // index of current character
     private int line;
 
+    private int xmlTokenBuilderId;
+    private int multilineCommentBuilderId;
+
     private void addBuilders() { //add builders for all tokens
         builders = new Builder[14];
         builders[0] = new PlainIdentifierToken.Builder();
@@ -24,8 +27,10 @@ public class LexicalAnalyzer {
         builders[9] = new CharacterLiteralToken.Builder();
         builders[10] = new ParenthesesToken.Builder();
         builders[11] = new XmlToken.Builder();
+        xmlTokenBuilderId = 11;
         builders[12] = new SimpleCommentToken.Builder();
         builders[13] = new MultilineCommentToken.Builder();
+        multilineCommentBuilderId = 13;
     }
 
     public LexicalAnalyzer(String inputCode) {
@@ -43,9 +48,11 @@ public class LexicalAnalyzer {
         if (top > inputCode.length())
             return null;
         addBuilders();
+        boolean hasWhiteSpaces = false;
         while (top < inputCode.length() &&
                 CharacterUtil.isWhiteSpace(inputCode.charAt(top))) {
             top++;
+            hasWhiteSpaces = true;
         }
         Builder last = null;
         int pos = top;
@@ -70,14 +77,15 @@ public class LexicalAnalyzer {
 
         }
 
-        if (builders[11] != null &&
-                builders[11].getState().equals(State.PARTIALLY_MATCH)) {
+        if (builders[xmlTokenBuilderId] != null &&
+                (builders[xmlTokenBuilderId].getState().equals(State.PARTIALLY_MATCH)
+                        || hasWhiteSpaces)) {
             top = inputCode.length() + 1;
             return new ErrorToken("Token not recognized", line);
         }
 
-        if (builders[13] != null &&
-                builders[13].getState().equals(State.PARTIALLY_MATCH)) {
+        if (builders[multilineCommentBuilderId] != null &&
+                builders[multilineCommentBuilderId].getState().equals(State.PARTIALLY_MATCH)) {
             top = inputCode.length() + 1;
             return new ErrorToken("Incorrect comment", line);
         }
