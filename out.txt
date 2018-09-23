@@ -1,1 +1,4 @@
-T_error(message="Incorrect comment", line=1)
+T_keyword(val)
+T_identifier(s)
+T_keyword(=)
+T_error(message="Token not recognized", line=1)

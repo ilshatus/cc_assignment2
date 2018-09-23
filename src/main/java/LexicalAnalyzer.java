@@ -11,7 +11,7 @@ public class LexicalAnalyzer {
     private int line;
 
     private void addBuilders() { //add builders for all tokens
-        builders = new Builder[13];
+        builders = new Builder[14];
         builders[0] = new PlainIdentifierToken.Builder();
         builders[1] = new LogicalLiteralToken.Builder();
         builders[2] = new MultilineStringLiteralToken.Builder();
@@ -23,8 +23,9 @@ public class LexicalAnalyzer {
         builders[8] = new KeywordToken.Builder();
         builders[9] = new CharacterLiteralToken.Builder();
         builders[10] = new ParenthesesToken.Builder();
-        builders[11] = new MultilineCommentToken.Builder();
+        builders[11] = new XmlToken.Builder();
         builders[12] = new SimpleCommentToken.Builder();
+        builders[13] = new MultilineCommentToken.Builder();
     }
 
     public LexicalAnalyzer(String inputCode) {
@@ -71,6 +72,12 @@ public class LexicalAnalyzer {
 
         if (builders[11] != null &&
                 builders[11].getState().equals(State.PARTIALLY_MATCH)) {
+            top = inputCode.length() + 1;
+            return new ErrorToken("Token not recognized", line);
+        }
+
+        if (builders[13] != null &&
+                builders[13].getState().equals(State.PARTIALLY_MATCH)) {
             top = inputCode.length() + 1;
             return new ErrorToken("Incorrect comment", line);
         }

@@ -1,2 +1,1 @@
-/*/*/
-val s = "sds"//sdd
+val s = <sds></sds
