@@ -33,10 +33,12 @@ It gets the whole program code as String input. And the returning tokens by call
 
 ## Tokens
 
+Each token has output forman to string as "T_nameOfToken(string_value)" 
+
 - Token token '''Token.java''' parent class of all tokens
 
 - PlainIdentifierToken token '''PlainIdentifierToken.java''' token which accepts all names of variables, functions, classes and etc.
-
+Output format "T_identifier(%s)"
 
 - Delimetr token '''DelimiterToken.java''' token which accepts all delimetrs ";" "." "," "\n" 
 
