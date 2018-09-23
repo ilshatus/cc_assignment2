@@ -1,1 +1,4 @@
-0
+<- args) yield a.toUpperCase
+    println("Arguments: " + res.toString)
+  }
+}
