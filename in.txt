@@ -1,12 +1,3 @@
-/*
-
-/*
-*/
-
-*/
-
-val a = b
-//fdsfsfs
-
-
-x . "asdasfasf
+//asd
+//asd
+val a = v

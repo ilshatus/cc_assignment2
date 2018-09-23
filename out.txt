@@ -1,20 +1,9 @@
-T_comment(/*
-
-/*
-*/
-
-*/)
+T_comment(//asd)
 T_delimiter(new_line)
+T_comment(//asd)
 T_delimiter(new_line)
 T_keyword(val)
 T_identifier(a)
 T_keyword(=)
-T_identifier(b)
-T_delimiter(new_line)
-T_comment(//fdsfsfs)
-T_delimiter(new_line)
-T_delimiter(new_line)
-T_delimiter(new_line)
-T_identifier(x)
-T_delimiter(dot)
-T_error(Token not recognized on position 41 first characters are "asdasfasf)
+T_identifier(v)
+T_end_of_file()
