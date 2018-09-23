@@ -56,19 +56,7 @@ public class TestLexicalAnalyzer {
         Assert.assertTrue(lexicalAnalyzer.getNextToken() == null);
     }
 
-    /*   @Test
-       public void test() {
-           String input = ;
-           LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(input);
-           Token token;
-           String answer = "";
-           while ((token = lexicalAnalyzer.getNextToken()) != null) {
-               answer = answer + token.toString() + "\n";
-           }
-           String res =
-           Assert.assertTrue(answer.equals( res));
-       }
-   */
+
     @Test
     public void test5() {
         String input = "object HelloWorld {\n" +
@@ -295,6 +283,126 @@ public class TestLexicalAnalyzer {
                    "T_end_of_file()\n";
            Assert.assertTrue(answer.equals( res));
        }
+
+       @Test
+       public void test8() {
+           String input = "/** Bigint's can be used seamlessly */\n" +
+                   "object bigint extends Application {\n" +
+                   "  def factorial(n: BigInt): BigInt =\n" +
+                   "    if (n == 0) 1 else n * factorial(n-1)\n" +
+                   "\n" +
+                   "  val f50 = factorial(50); val f49 = factorial(49)\n" +
+                   "  println(\"50! = \" + f50)\n" +
+                   "  println(\"49! = \" + f49)\n" +
+                   "  println(\"50!/49! = \" + (f50 / f49))\n" +
+                   "}";
+           LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(input);
+           Token token;
+           String answer = "";
+           while ((token = lexicalAnalyzer.getNextToken()) != null) {
+               answer = answer + token.toString() + "\n";
+           }
+           String res = "T_comment(/** Bigint's can be used seamlessly */)\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_keyword(object)\n" +
+                   "T_identifier(bigint)\n" +
+                   "T_keyword(extends)\n" +
+                   "T_identifier(Application)\n" +
+                   "T_parentheses({)\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_keyword(def)\n" +
+                   "T_identifier(factorial)\n" +
+                   "T_parentheses(()\n" +
+                   "T_identifier(n)\n" +
+                   "T_keyword(:)\n" +
+                   "T_identifier(BigInt)\n" +
+                   "T_parentheses())\n" +
+                   "T_keyword(:)\n" +
+                   "T_identifier(BigInt)\n" +
+                   "T_keyword(=)\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_keyword(if)\n" +
+                   "T_parentheses(()\n" +
+                   "T_identifier(n)\n" +
+                   "T_identifier(==)\n" +
+                   "T_literal_integer(0)\n" +
+                   "T_parentheses())\n" +
+                   "T_literal_integer(1)\n" +
+                   "T_keyword(else)\n" +
+                   "T_identifier(n)\n" +
+                   "T_identifier(*)\n" +
+                   "T_identifier(factorial)\n" +
+                   "T_parentheses(()\n" +
+                   "T_identifier(n)\n" +
+                   "T_literal_integer(-1)\n" +
+                   "T_parentheses())\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_keyword(val)\n" +
+                   "T_identifier(f50)\n" +
+                   "T_keyword(=)\n" +
+                   "T_identifier(factorial)\n" +
+                   "T_parentheses(()\n" +
+                   "T_literal_integer(50)\n" +
+                   "T_parentheses())\n" +
+                   "T_delimiter(comma)\n" +
+                   "T_keyword(val)\n" +
+                   "T_identifier(f49)\n" +
+                   "T_keyword(=)\n" +
+                   "T_identifier(factorial)\n" +
+                   "T_parentheses(()\n" +
+                   "T_literal_integer(49)\n" +
+                   "T_parentheses())\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_identifier(println)\n" +
+                   "T_parentheses(()\n" +
+                   "T_literal_string(\"50! = \")\n" +
+                   "T_identifier(+)\n" +
+                   "T_identifier(f50)\n" +
+                   "T_parentheses())\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_identifier(println)\n" +
+                   "T_parentheses(()\n" +
+                   "T_literal_string(\"49! = \")\n" +
+                   "T_identifier(+)\n" +
+                   "T_identifier(f49)\n" +
+                   "T_parentheses())\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_identifier(println)\n" +
+                   "T_parentheses(()\n" +
+                   "T_literal_string(\"50!/49! = \")\n" +
+                   "T_identifier(+)\n" +
+                   "T_parentheses(()\n" +
+                   "T_identifier(f50)\n" +
+                   "T_identifier(/)\n" +
+                   "T_identifier(f49)\n" +
+                   "T_parentheses())\n" +
+                   "T_parentheses())\n" +
+                   "T_delimiter(new_line)\n" +
+                   "T_parentheses(})\n" +
+                   "T_end_of_file()\n";
+           Assert.assertTrue(answer.equals( res));
+       }
+
+
+
+       /*   @Test
+       public void test() {
+           String input = ;
+           LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer(input);
+           Token token;
+           String answer = "";
+           while ((token = lexicalAnalyzer.getNextToken()) != null) {
+               answer = answer + token.toString() + "\n";
+           }
+           String res =
+           Assert.assertTrue(answer.equals( res));
+       }
+   */
+
+
+
+
 
 
 }
