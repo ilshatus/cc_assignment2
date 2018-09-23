@@ -18,7 +18,7 @@ public class XmlToken extends Token {
     }
 
     public static class Builder extends SimpleRegexBuilder {
-        private static final String regexp = "^<(.\\n?)+>(.|\\n)*<(.\\n?)+>$";
+        private static final String regexp = "^<(.|\\n)+>(.|\\n)*<(.|\\n)+>$";
 
         public Builder() {
             super();
