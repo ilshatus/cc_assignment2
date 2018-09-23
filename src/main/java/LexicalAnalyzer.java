@@ -2,14 +2,16 @@ import tokens.*;
 import tokens.builders.Builder;
 import tokens.enums.State;
 import tokens.literals.*;
+import utils.CharacterUtil;
 
 public class LexicalAnalyzer {
     private String inputCode; //text
     private Builder builders[]; // all tokens analyzers
     private int top; // index of current character
+    private int line;
 
     private void addBuilders() { //add builders for all tokens
-        builders = new Builder[13];
+        builders = new Builder[14];
         builders[0] = new PlainIdentifierToken.Builder();
         builders[1] = new LogicalLiteralToken.Builder();
         builders[2] = new MultilineStringLiteralToken.Builder();
@@ -21,13 +23,15 @@ public class LexicalAnalyzer {
         builders[8] = new KeywordToken.Builder();
         builders[9] = new CharacterLiteralToken.Builder();
         builders[10] = new ParenthesesToken.Builder();
-        builders[11] = new MultilineCommentToken.Builder();
+        builders[11] = new XmlToken.Builder();
         builders[12] = new SimpleCommentToken.Builder();
+        builders[13] = new MultilineCommentToken.Builder();
     }
 
     public LexicalAnalyzer(String inputCode) {
         this.inputCode = inputCode.replaceAll("\r", "");
         addBuilders();
+        line = 1;
         top = 0;
     }
 
@@ -39,7 +43,8 @@ public class LexicalAnalyzer {
         if (top > inputCode.length())
             return null;
         addBuilders();
-        while (top < inputCode.length() && inputCode.charAt(top) == ' ') {
+        while (top < inputCode.length() &&
+                CharacterUtil.isWhiteSpace(inputCode.charAt(top))) {
             top++;
         }
         Builder last = null;
@@ -68,25 +73,28 @@ public class LexicalAnalyzer {
         if (builders[11] != null &&
                 builders[11].getState().equals(State.PARTIALLY_MATCH)) {
             top = inputCode.length() + 1;
-            return new ErrorToken("Incorrect comment");
+            return new ErrorToken("Token not recognized", line);
+        }
+
+        if (builders[13] != null &&
+                builders[13].getState().equals(State.PARTIALLY_MATCH)) {
+            top = inputCode.length() + 1;
+            return new ErrorToken("Incorrect comment", line);
         }
 
         if (last == null) {
-            int r = Math.min(inputCode.length(), top + 10);
-            String error_text = "on position "+top
-                    + " first characters are "+inputCode.substring(top,r);
             top = inputCode.length() + 1;
-            return new ErrorToken("Token not recognized " + error_text);
+            return new ErrorToken("Token not recognized", line);
         }
 
         last.clear();
         for (int i = top; i <= pos; ++i) {
+            if (inputCode.charAt(i) == '\n')
+                line++;
             last.addNextChar(inputCode.charAt(i)); // add new token
         }
         top = pos + 1; // move top for next token
 
         return last.build();
     }
-
-
 }

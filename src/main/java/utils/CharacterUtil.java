@@ -2,6 +2,7 @@ package utils;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class CharacterUtil {
     private enum UnicodeLetterCategory {
@@ -41,6 +42,8 @@ public class CharacterUtil {
     private static final HashSet<Character> parenthesesSet = new HashSet<>(Arrays.asList(parentheses));
     private static final Character[] delimiters = {'`', '\'', '\"', '.', ';', ','};
     private static final HashSet<Character> delimitersSet = new HashSet<>(Arrays.asList(delimiters));
+    private static final Character[] whiteSpaces = { '\u0020', '\u0009' };
+    private static final List<Character> whiteSpacesList = Arrays.asList(whiteSpaces);
 
     public static boolean isLetter(char ch) {
         int code = Character.getType(ch);
@@ -81,13 +84,7 @@ public class CharacterUtil {
         return false;
     }
 
-    public static boolean isPrintableChar(char ch) {
-        return ch >= '\u0020' && ch <= '\u007F';
-    }
-
-    public static boolean isHexDigit(char ch) {
-        return isDigit(ch) ||
-                (ch >= 'a' && ch <= 'f') ||
-                (ch >= 'A' && ch <= 'F');
+    public static boolean isWhiteSpace(char ch) {
+        return whiteSpacesList.contains(ch);
     }
 }
