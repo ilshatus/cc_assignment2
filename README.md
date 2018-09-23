@@ -60,7 +60,7 @@ It gets the whole program code as String input. And the returning tokens by call
 
 ### Literals tokens
 
-- Character Literal Token '''CharacterLiteralToken.java''' token which accepts all version of characters 'a', '/u1357' 
+- Character Literal Token '''CharacterLiteralToken.java''' token which accepts all version of characters 'a', '\u1357' 
 - Logical Literal Token '''LogicalLiteralToken.java''' token which accepts logical values "true" "false"
 - Multiline String Literal Token '''MultilineStringLiteralToken.java''' token which accepts multilines strings """asdasa
 asdasda"""
