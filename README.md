@@ -61,9 +61,6 @@ Output format "T_end_of_file()"
 - Error  token '''ErrorToken.java''' token which returing token of error. It stores in the text reason(if it can say), position and first letters. 
 Output format "T_error(message=\"%s\", line=%d)"
 
-- End of file  token '''EndOfFileToken.java''' token which returing token of ending the file. It has only one function. 
-Output format 
-
 - Back Quote Identifier  token '''BackQuoteIdentifierToken.java''' token which accepts string in quote `string`
 Output format "T_identifier(%s)"
 
