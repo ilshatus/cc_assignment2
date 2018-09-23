@@ -20,3 +20,9 @@ Github link: https://github.com/ilshatus/cc_assignment2
 - open ```pom.xml``` as project in Intellij Idea
 - run ```src/main/java/Main``` to build and run
 - run ```src/test/java/UnitTests``` to run test
+
+
+
+### Tokens
+
+- Delimetr token '''DelimiterToken.java''' token which accepts all delimetrs ";" "." "," "\n" 
