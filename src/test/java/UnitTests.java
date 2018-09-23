@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
                 TestLexicalAnalyzer.class,
                 TestLiteralTokens.class,
                 TestParenthesesToken.class,
-                TestPlainIdentifierToken.class
+                TestPlainIdentifierToken.class,
+                TestXmlToken.class
         }
 )
 public class UnitTests {
