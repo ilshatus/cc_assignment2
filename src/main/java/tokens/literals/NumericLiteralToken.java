@@ -29,10 +29,11 @@ public class NumericLiteralToken extends Token {
 
     public static class Builder extends SimpleRegexBuilder {
         private static final String regexp =
-                "^[+-]?(([1-9]\\d*)|(\\.\\d+)|([1-9]\\d*)(\\.\\d+))([eE][+-]?\\d+)?$";
+                "^[+-]?((\\d+)|(\\.\\d+)|(\\d+)(\\.\\d+))([eE][+-]?\\d+)?$";
 
         public Builder() {
             super();
+            double t = .00000000000e00;
             super.p = Pattern.compile(regexp, Pattern.MULTILINE);
         }
 

@@ -1,2 +1,1 @@
-T_identifier(==)
 T_error(message="Token not recognized", line=1)
