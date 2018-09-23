@@ -24,14 +24,14 @@ Github link: https://github.com/ilshatus/cc_assignment2
 
 # CODE STRUCTURE
 All source files stored in src folder.
-# Main 
+### Main 
 Main file "Main.java" runs the project. It reads the file with inputs from "in.txt" and call LexicalAnalyzers to proccess it. It also prints the output to file "out.txt". Both files "in.txt" and "out.txt" stored in the main folder of the project.
 
-#Lexical Analyzer
+###Lexical Analyzer
 
 It gets the whole program code as String input. And the returning tokens by calling function "getNextToken()". In each moment it producing only one next token.  
 
-### Tokens
+## Tokens
 
 - Token token '''Token.java''' parent class of all tokens
 
