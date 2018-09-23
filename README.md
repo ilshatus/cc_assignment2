@@ -77,7 +77,7 @@ Output format "T_literal_logical(%s)"
 asdasda""" 
 Output format  "T_literal_multiline_string(%s)"
 - Numeric Literal Token '''NumericLiteralToken.java''' token which accepts numeric values like "135", "-5.8" and etc
-Output format "T_literal_%s(%s)"
+Output format "T_literal_integer(%s)" or "T_literal_float(%s)"
 
 - String Literal Token '''StringLiteralToken.java''' token which accepts string values like "asdasd"
 Output format "T_literal_string(%s)"
