@@ -1,4 +1,4 @@
-# How to run
+# Instruments and instructions
 
 Code written on Java. For building and testing project used Maven.
 
