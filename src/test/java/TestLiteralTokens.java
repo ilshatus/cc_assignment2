@@ -1,6 +1,5 @@
 import org.junit.Assert;
 import org.junit.Test;
-import tokens.KeywordToken;
 import tokens.builders.Builder;
 import tokens.enums.State;
 import tokens.literals.*;
