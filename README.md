@@ -50,7 +50,18 @@ Github link: https://github.com/ilshatus/cc_assignment2
 
 - XML  token '''XmlToken.java''' token which accepts XML text.
 
-## Literals tokens
+Literals tokens
+
+- Character Literal Token '''CharacterLiteralToken.java''' token which accepts all version of characters 'a', '/u1357' 
+- Logical Literal Token '''LogicalLiteralToken.java''' token which accepts logical values "true" "false"
+- Multiline String Literal Token '''MultilineStringLiteralToken.java''' token which accepts multilines strings """asdasa
+asdasda"""
+- Numeric Literal Token '''NumericLiteralToken.java''' token which accepts numeric values like "135", "-5.8" and etc
+
+- String Literal Token '''StringLiteralToken.java''' token which accepts string values like "asdasd"
+
+- Symbol Literal Token '''SymbolLiteralToken.java''' token which accepts string const values like 'asdasd
+
 
 
 
