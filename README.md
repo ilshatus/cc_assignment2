@@ -25,12 +25,35 @@ Github link: https://github.com/ilshatus/cc_assignment2
 
 ### Tokens
 
+- Token token '''Token.java''' parent class of all tokens
+
+- PlainIdentifierToken token '''PlainIdentifierToken.java''' token which accepts all names of variables, functions, classes and etc.
+
+
 - Delimetr token '''DelimiterToken.java''' token which accepts all delimetrs ";" "." "," "\n" 
 
 - Keyword token '''KeywordToken.java''' token which accepts all special words in language "abstract", "do", "finally", "import", "null", "protected", "throw", "val", "case", "else", "for", "lazy", "object", "return", "trait", "var", "catch",  "extends", "forSome", "macro", "override", "sealed", "try", "while", "class", "if" and etc.
      
-- MultilineComment token '''MultilineCommentToken.java''' token which accepts multiline comments in format /* text */
+- Multiline Comment token '''MultilineCommentToken.java''' token which accepts multiline comments in format /* text */
+
+- Simple Comment token '''SimpleCommentToken.java''' token which accepts single line comment in format // text
 
 - ParenthesesToken token '''ParenthesesToken.java''' token which accepts parenthesess "(" ")" "\[" "\]" "{" "}"
+
+- End of file  token '''EndOfFileToken.java''' token which returing token of ending the file. It has only one function.
+
+- Error  token '''ErrorToken.java''' token which returing token of error. It stores in the text reason(if it can say), position and first letters.
+
+- End of file  token '''EndOfFileToken.java''' token which returing token of ending the file. It has only one function.
+
+- Back Quote Identifier  token '''BackQuoteIdentifierToken.java''' token which accepts string in quote `string`
+
+BackQuoteIdentifierToken
+
+- XML  token '''XmlToken.java''' token which accepts XML text.
+
+
+
+
 
 
